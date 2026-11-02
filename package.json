@@ -1,0 +1,36 @@
+{
+  "name": "tourist-assist",
+  "version": "1.0.0",
+  "description": "Tourist Assist : nashik and kumbh - QR-Based Tourist Information and Essential Facility System for Nashik Kumbh Mela 2027 and Nashik Tourism",
+  "main": "server.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "server": "node server.js",
+    "test": "node -e \"console.log('Testing Tourist Assist server imports'); require('./server'); process.exit(0);\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.6",
+    "autoprefixer": "^10.4.20",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "framer-motion": "^11.11.9",
+    "jsonwebtoken": "^9.0.3",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.453.0",
+    "next": "^14.2.15",
+    "postcss": "^8.4.47",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.14"
+  }
+}

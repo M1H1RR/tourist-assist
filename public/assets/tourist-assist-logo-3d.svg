@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Dynamic Filters for 3D Photorealism -->
+    <filter id="heroShadow3D" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="24" stdDeviation="16" flood-color="#000000" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#D97706" flood-opacity="0.3"/>
+    </filter>
+
+    <filter id="neonTealGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur1"/>
+      <feGaussianBlur stdDeviation="14" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlowGold" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Gradients -->
+    <!-- Outer 3D Metallic Saffron Body -->
+    <linearGradient id="body3DGrad" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="20%" stop-color="#F59E0B"/>
+      <stop offset="55%" stop-color="#D97706"/>
+      <stop offset="85%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </linearGradient>
+
+    <!-- 3D Beveled Edge Depth -->
+    <linearGradient id="bevel3DGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FEF3C7" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="#F59E0B" stop-opacity="0.2"/>
+      <stop offset="70%" stop-color="#78350F" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#271005" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Deep Metallic Core -->
+    <radialGradient id="midnightCore" cx="45%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="50%" stop-color="#1F2937"/>
+      <stop offset="85%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </radialGradient>
+
+    <!-- Temple Gold 3D Shading -->
+    <linearGradient id="gold3DShading" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="30%" stop-color="#FBBF24"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#854D0E"/>
+    </linearGradient>
+
+    <!-- Sacred Teal Glow Gradient -->
+    <linearGradient id="sacredTeal3D" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="50%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+
+    <!-- Specular Highlight Curve -->
+    <linearGradient id="specularArc" x1="20%" y1="0%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Backdrop Aura -->
+  <circle cx="200" cy="180" r="140" fill="url(#sacredTeal3D)" opacity="0.08" filter="url(#neonTealGlow)"/>
+  
+  <!-- Outer Orbiting Compass/Ring in 3D Perspective -->
+  <g transform="rotate(-15 200 180)">
+    <ellipse cx="200" cy="180" rx="160" ry="60" fill="none" stroke="url(#gold3DShading)" stroke-width="2.5" stroke-dasharray="14 12" opacity="0.6"/>
+    <!-- Orbiting Satellite Indicator (Teal) -->
+    <circle cx="360" cy="180" r="7" fill="#2DD4BF" filter="url(#neonTealGlow)"/>
+    <circle cx="360" cy="180" r="3" fill="#FFFFFF"/>
+    <!-- Orbiting Satellite Indicator (Gold) -->
+    <circle cx="40" cy="180" r="6" fill="#FBBF24" filter="url(#softGlowGold)"/>
+  </g>
+
+  <!-- Ground Contact Shadow -->
+  <ellipse cx="200" cy="355" rx="80" ry="18" fill="#000000" opacity="0.45" filter="url(#heroShadow3D)"/>
+  <ellipse cx="200" cy="355" rx="45" ry="9" fill="#000000" opacity="0.6"/>
+
+  <!-- Main 3D Location Pin Construct -->
+  <g filter="url(#heroShadow3D)">
+    
+    <!-- Outer 3D Extrusion Layer (Thickness & Shadow Base) -->
+    <path d="M200 345 C190 332, 70 215, 70 148 A130 130 0 1 1 330 148 C330 215, 210 332, 200 345 Z"
+          fill="#5B2206"/>
+    
+    <!-- 3D Bevel Body -->
+    <path d="M200 340 C191 328, 74 212, 74 146 A126 126 0 1 1 326 146 C326 212, 209 328, 200 340 Z"
+          fill="url(#bevel3DGrad)"/>
+
+    <!-- Main Front Face of 3D Pin -->
+    <path d="M200 336 C192 324, 80 210, 80 146 A120 120 0 1 1 320 146 C320 210, 208 324, 200 336 Z"
+          fill="url(#body3DGrad)"/>
+
+    <!-- Specular Highlight Crest (Simulates curved reflective surface) -->
+    <path d="M110 85 C140 50, 260 50, 290 85 C250 64, 150 64, 110 85 Z"
+          fill="url(#specularArc)"/>
+
+    <!-- Inner Core Bevel Cavity -->
+    <circle cx="200" cy="146" r="84" fill="#0B0F19" stroke="#78350F" stroke-width="4"/>
+    <circle cx="200" cy="146" r="82" fill="url(#midnightCore)"/>
+    <circle cx="200" cy="146" r="80" fill="none" stroke="#F59E0B" stroke-width="2" opacity="0.4"/>
+
+    <!-- ==================== QR DIGITAL MATRIX INTEGRATION ==================== -->
+    <!-- Top-Left QR Code Module -->
+    <g transform="translate(142, 88)">
+      <rect x="0" y="0" width="24" height="24" rx="4" fill="none" stroke="url(#sacredTeal3D)" stroke-width="3"/>
+      <rect x="6" y="6" width="12" height="12" rx="2" fill="#2DD4BF" filter="url(#neonTealGlow)"/>
+    </g>
+
+    <!-- Top-Right QR Code Module -->
+    <g transform="translate(234, 88)">
+      <rect x="0" y="0" width="24" height="24" rx="4" fill="none" stroke="url(#sacredTeal3D)" stroke-width="3"/>
+      <rect x="6" y="6" width="12" height="12" rx="2" fill="#2DD4BF" filter="url(#neonTealGlow)"/>
+    </g>
+
+    <!-- Bottom QR Code Anchor / Guide Node -->
+    <g transform="translate(188, 182)">
+      <rect x="0" y="0" width="24" height="24" rx="4" fill="none" stroke="url(#sacredTeal3D)" stroke-width="3"/>
+      <rect x="6" y="6" width="12" height="12" rx="2" fill="#2DD4BF" filter="url(#neonTealGlow)"/>
+    </g>
+
+    <!-- Connecting Fiber Data Lines (Digital Assistance Concept) -->
+    <line x1="166" y1="100" x2="185" y2="100" stroke="#0F766E" stroke-width="2" stroke-dasharray="3 3"/>
+    <line x1="215" y1="100" x2="234" y2="100" stroke="#0F766E" stroke-width="2" stroke-dasharray="3 3"/>
+    <line x1="200" y1="170" x2="200" y2="182" stroke="#0F766E" stroke-width="2" stroke-dasharray="3 3"/>
+
+    <!-- ==================== 3D SACRED TEMPLE & KUMBH SYMBOL ==================== -->
+    <!-- Sacred Kalash / Mandir Shikhara in Polished 3D Gold -->
+    <g filter="url(#softGlowGold)">
+      <!-- Tier 1: Wide Carved Stone Base -->
+      <path d="M170 172 L230 172 L222 160 L178 160 Z" fill="url(#gold3DShading)"/>
+      <path d="M178 160 L222 160 L220 156 L180 156 Z" fill="#FFFBEB" opacity="0.3"/>
+
+      <!-- Tier 2: Mid-Shikhara Fluted Steps -->
+      <path d="M176 156 L224 156 L216 142 L184 142 Z" fill="url(#gold3DShading)"/>
+
+      <!-- Tier 3: Upper Lotus Pedestal -->
+      <path d="M182 142 L218 142 L212 128 L188 128 Z" fill="url(#gold3DShading)"/>
+
+      <!-- Kalash Body / Amrit Pot (Spiritual Pilgrimage Symbol) -->
+      <ellipse cx="200" cy="126" rx="14" ry="9" fill="url(#gold3DShading)"/>
+
+      <!-- Shikhara Spire Apex (Trishul/Kalash Finial) -->
+      <path d="M196 120 L204 120 L200 96 Z" fill="url(#gold3DShading)"/>
+      
+      <!-- Crown Jyoti Flame / Sacred Amrit Jewel (Glows with divine golden energy) -->
+      <circle cx="200" cy="94" r="5" fill="#FEF08A" filter="url(#neonTealGlow)"/>
+      <circle cx="200" cy="94" r="2.5" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Radiating Assistance Signal Beacons -->
+    <path d="M152 140 A60 60 0 0 1 248 140" fill="none" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 6" opacity="0.75"/>
+    <path d="M162 126 A46 46 0 0 1 238 126" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>
+

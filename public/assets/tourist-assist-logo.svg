@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- 3D Lighting & Shadows -->
+    <filter id="logoShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.35"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#D97706" flood-opacity="0.25"/>
+    </filter>
+    
+    <filter id="glowTeal" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Gradients -->
+    <!-- 3D Pin Shell: Saffron to Temple Gold -->
+    <linearGradient id="pinShellGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+
+    <!-- Pin Bevel 3D Effect -->
+    <linearGradient id="pinBevelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#D97706" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#451A03" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <!-- Inner Core: Charcoal -->
+    <radialGradient id="innerCoreGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1F2937"/>
+      <stop offset="75%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0B0F19"/>
+    </radialGradient>
+
+    <!-- Temple Gold Gradient -->
+    <linearGradient id="templeGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF3C7"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="80%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </linearGradient>
+
+    <!-- Sacred Teal Gradient -->
+    <linearGradient id="sacredTealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2DD4BF"/>
+      <stop offset="60%" stop-color="#0F766E"/>
+      <stop offset="100%" stop-color="#115E59"/>
+    </linearGradient>
+
+    <!-- Metallic Specular Highlight -->
+    <linearGradient id="specularGlint" x1="0%" y1="0%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ==================== 3D LOGO ICON (Left) ==================== -->
+  <g transform="translate(10, 8)" filter="url(#logoShadow)">
+    
+    <!-- Floor Shadow Under Pin -->
+    <ellipse cx="50" cy="100" rx="26" ry="6" fill="#000000" opacity="0.35"/>
+
+    <!-- 3D Pin Outer Base / Body -->
+    <path d="M50 96 C47 92, 14 58, 14 38 A36 36 0 1 1 86 38 C86 58, 53 92, 50 96 Z"
+          fill="url(#pinShellGrad)"/>
+    
+    <!-- 3D Bevel Rim -->
+    <path d="M50 96 C47 92, 14 58, 14 38 A36 36 0 1 1 86 38 C86 58, 53 92, 50 96 Z"
+          fill="url(#pinBevelGrad)" opacity="0.6"/>
+
+    <!-- Top Left Specular Glint Reflection -->
+    <path d="M26 18 A32 32 0 0 1 74 18 C62 14, 38 14, 26 18 Z"
+          fill="url(#specularGlint)"/>
+
+    <!-- Inner Core Disk (Dark Midnight Charcoal) -->
+    <circle cx="50" cy="38" r="25" fill="url(#innerCoreGrad)" stroke="#F59E0B" stroke-width="1.5" stroke-opacity="0.5"/>
+
+    <!-- QR Code Geometry Matrix (Integrated Digital Nodes in Sacred Teal) -->
+    <!-- Top-Left QR Marker Node -->
+    <rect x="33" y="21" width="7" height="7" rx="1.5" fill="none" stroke="url(#sacredTealGrad)" stroke-width="1.5"/>
+    <rect x="35" y="23" width="3" height="3" rx="0.5" fill="#2DD4BF" filter="url(#glowTeal)"/>
+
+    <!-- Top-Right QR Marker Node -->
+    <rect x="60" y="21" width="7" height="7" rx="1.5" fill="none" stroke="url(#sacredTealGrad)" stroke-width="1.5"/>
+    <rect x="62" y="23" width="3" height="3" rx="0.5" fill="#2DD4BF" filter="url(#glowTeal)"/>
+
+    <!-- Bottom-Center QR Anchor Node -->
+    <rect x="46.5" y="49" width="7" height="7" rx="1.5" fill="none" stroke="url(#sacredTealGrad)" stroke-width="1.5"/>
+    <rect x="48.5" y="51" width="3" height="3" rx="0.5" fill="#2DD4BF" filter="url(#glowTeal)"/>
+
+    <!-- 3D Sacred Temple Shikhara & Kumbh Kalash Motif (Gold) -->
+    <!-- Kalash Base / Shikhara Tier 1 -->
+    <path d="M42 45 L58 45 L55 41 L45 41 Z" fill="url(#templeGoldGrad)"/>
+    <!-- Shikhara Tier 2 -->
+    <path d="M44 41 L56 41 L53 35 L47 35 Z" fill="url(#templeGoldGrad)"/>
+    <!-- Shikhara Peak / Kalash Spire -->
+    <path d="M47 35 L53 35 L50 25 Z" fill="url(#templeGoldGrad)"/>
+    <!-- Kalash Holy Water Drop / Sacred Flame Tip (Teal + Gold Glow) -->
+    <circle cx="50" cy="24" r="2" fill="#FBBF24"/>
+    
+    <!-- Digital Signal Beacons / Radiating Wave Arcs -->
+    <path d="M38 31 A15 15 0 0 1 62 31" fill="none" stroke="#2DD4BF" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="2 3" opacity="0.85"/>
+  </g>
+
+  <!-- ==================== TYPOGRAPHY WORDMARK ==================== -->
+  <g transform="translate(112, 24)">
+    
+    <!-- Category Pill Tag -->
+    <rect x="0" y="0" width="186" height="20" rx="10" fill="#0F766E" fill-opacity="0.15" stroke="#0F766E" stroke-opacity="0.4"/>
+    <circle cx="9" cy="10" r="3.5" fill="#0F766E"/>
+    <text x="18" y="14" font-family="'Space Grotesk', -apple-system, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1.5" fill="#0F766E">
+      NASHIK &amp; KUMBH 2027
+    </text>
+
+    <!-- Main Title: TOURIST ASSIST -->
+    <text x="0" y="52" font-family="'Space Grotesk', 'Outfit', sans-serif" font-size="34" font-weight="800" letter-spacing="1" fill="#111827">
+      TOURIST <tspan fill="#D97706">ASSIST</tspan>
+    </text>
+
+    <!-- Tagline: Explore. Discover. Stay Safe. -->
+    <text x="1" y="74" font-family="'Inter', sans-serif" font-size="12" font-weight="600" letter-spacing="0.5" fill="#6B7280">
+      Explore. Discover. Stay Safe.
+    </text>
+  </g>
+</svg>
+

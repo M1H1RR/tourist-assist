@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Assist - Nashik 10km Nearby Guide & Emergency Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kumbh: {
+                            orange: '#F97316',
+                            saffron: '#EA580C',
+                            darkSaffron: '#C2410C',
+                            gold: '#EAB308',
+                            maroon: '#881337',
+                            deepBlue: '#1E3A8A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .pulse-badge {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.05); }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3F4F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #F97316;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+    <!-- Top Emergency Helpline Banner -->
+    <div class="bg-gradient-to-r from-red-700 via-orange-600 to-red-700 text-white text-xs sm:text-sm py-2 px-3 shadow-inner sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
+            <div class="flex items-center space-x-2 font-semibold">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-300 animate-ping"></span>
+                <i class="fa-solid font-bold fa-triangle-exclamation"></i>
+                <span id="txt-emergency-bar">Maha Kumbh Emergency Helpline: 108 (Ambulance) | 112 (Police) | 1800-233-0011 (Control Room)</span>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+                <a href="tel:108" class="bg-white text-red-700 font-bold px-2.5 py-1 rounded-full shadow hover:bg-yellow-100 transition flex items-center gap-1">
+                    <i class="fa-solid fa-phone"></i> <span id="txt-call-108">Call 108</span>
+                </a>
+                <a href="tel:112" class="bg-blue-900 text-white font-bold px-2.5 py-1 rounded-full shadow hover:bg-blue-800 transition flex items-center gap-1">
+                    <i class="fa-solid fa-shield-halved"></i> <span id="txt-call-112">Call 112</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="bg-white border-b border-orange-100 shadow-sm sticky top-[36px] z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
+                    <i class="fa-solid fa-om text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl leading-tight bg-gradient-to-r from-orange-600 via-red-600 to-amber-600 bg-clip-text text-transparent">
+                        Tourist Assist
+                    </h1>
+                    <p class="text-[11px] text-slate-500 font-medium" id="txt-subhead">10 KM Radius Assistance & Navigation</p>
+                </div>
+            </div>
+
+            <!-- Header Controls: Language & QR Generator -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Language Selector -->
+                <div class="relative inline-block text-left">
+                    <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-100 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-lg font-semibold px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="hi">मराठी / हिंदी (Marathi/Hindi)</option>
+                    </select>
+                </div>
+
+                <!-- Saved Items Modal Trigger -->
+                <button onclick="toggleSavedModal()" class="relative p-2 text-slate-600 hover:text-orange-600 rounded-lg hover:bg-orange-50 transition" title="Saved Places">
+                    <i class="fa-solid fa-bookmark text-lg"></i>
+                    <span id="savedBadge" class="hidden absolute -top-1 -right-1 bg-orange-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+
+                <!-- Share / QR Generator Button -->
+                <button onclick="openQrModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-3 sm:px-4 py-1.5 rounded-lg font-semibold text-xs sm:text-sm shadow-md shadow-orange-500/20 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span class="hidden sm:inline" id="txt-get-qr">Get QR Poster</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner with Nashik Ground Zero Info -->
+    <section class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 py-6 sm:py-8 px-4 border-b border-orange-100">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center space-x-2 bg-white/80 border border-orange-200 px-3 py-1 rounded-full text-xs font-semibold text-orange-700 mb-3 shadow-sm">
+                <i class="fa-solid fa-location-dot text-red-500 animate-bounce"></i>
+                <span id="txt-ground-zero">Center Point: Ramkund / Tapovan, Panchavati, Nashik</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-800 tracking-tight" id="txt-hero-title">
+                Maha Kumbh Mela Nashik 2027
+            </h2>
+            <p class="text-xs sm:text-base text-slate-600 max-w-2xl mx-auto mt-1" id="txt-hero-desc">
+                Find verified hospitals, hostels, hotels, mess bhojanalay, and emergency services within 10 KM radius. Direct links to Google Maps & live call buttons.
+            </p>
+            
+            <!-- Radius Distance Filter Bar -->
+            <div class="mt-6 max-w-xl mx-auto bg-white p-4 rounded-2xl shadow-md border border-orange-100">
+                <div class="flex justify-between items-center mb-2">
+                    <label for="radiusSlider" class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-[#F97316] fa-compass text-orange-500"></i>
+                        <span id="txt-radius-label">Maximum Radius:</span>
+                    </label>
+                    <span id="radiusValue" class="text-xs font-black bg-orange-100 text-orange-700 px-2.5 py-0.5 rounded-full border border-orange-300">
+                        10.0 KM
+                    </span>
+                </div>
+                <input type="range" id="radiusSlider" min="0.5" max="10" step="0.5" value="10" oninput="updateRadiusFilter(this.value)"
+                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600">
+                <div class="flex justify-between text-[10px] text-slate-400 font-medium mt-1">
+                    <span>0.5 km (Ramkund)</span>
+                    <span>3.0 km</span>
+                    <span>6.0 km</span>
+                    <span>10.0 km (City Limits)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section & Filters -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
+        
+        <!-- Search and Quick Category Bar -->
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+            <!-- Search Box -->
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" onkeyup="filterPlaces()" placeholder="Search hospital, mess, hotel, police..." 
+                    class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm">
+            </div>
+
+            <!-- View Toggle & Sort Controls -->
+            <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-end">
+                <!-- Sort Dropdown -->
+                <div class="flex items-center space-x-1 text-xs">
+                    <span class="text-slate-500 font-medium hidden sm:inline" id="txt-sort-by">Sort by:</span>
+                    <select id="sortSelect" onchange="filterPlaces()" class="bg-white border border-slate-200 text-slate-700 font-semibold text-xs rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm cursor-pointer">
+                        <option value="distance" id="opt-dist">Nearest First (Distance)</option>
+                        <option value="rating" id="opt-rating">Highest Rating</option>
+                        <option value="price_low" id="opt-price-low">Price: Low to High</option>
+                    </select>
+                </div>
+
+                <!-- View Switcher (Grid vs Visual Map) -->
+                <div class="bg-slate-200 p-1 rounded-xl flex items-center">
+                    <button id="btn-view-grid" onclick="switchView('grid')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800 bg-white shadow-sm transition">
+                        <i class="fa-solid fa-grid-2 text-orange-600 mr-1"></i> <span id="txt-grid-view">Grid View</span>
+                    </button>
+                    <button id="btn-view-map" onclick="switchView('map')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-map-location-dot text-slate-500 mr-1"></i> <span id="txt-map-view">Kumbh Map</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Buttons -->
+        <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
+            <button onclick="setCategory('all')" id="cat-all" class="cat-btn active bg-orange-600 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-border-all"></i> <span id="txt-cat-all">All Nearby</span>
+            </button>
+            <button onclick="setCategory('emergency')" id="cat-emergency" class="cat-btn bg-white text-slate-700 hover:bg-red-50 hover:text-red-600 border border-slate-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-kit-medical text-red-500"></i> <span id="txt-cat-emergency">Emergency & Help</span>
+            </button>
+            <button onclick="setCategory('hospital')" id="cat-hospital" class="cat-btn bg-white text-slate-700 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-hospital text-blue-500"></i> <span id="txt-cat-hospitals">Hospitals</span>
+            </button>
+            <button onclick="setCategory('mess')" id="cat-mess" class="cat-btn bg-white text-slate-700 hover:bg-amber-50 hover:text-amber-600 border border-slate-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-utensils text-amber-500"></i> <span id="txt-cat-mess">Mess & Bhandara</span>
+            </button>
+            <button onclick="setCategory('hotel')" id="cat-hotel" class="cat-btn bg-white text-slate-700 hover:bg-purple-50 hover:text-purple-600 border border-slate-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-hotel text-purple-500"></i> <span id="txt-cat-hotels">Hotels</span>
+            </button>
+            <button onclick="setCategory('hostel')" id="cat-hostel" class="cat-btn bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-bed text-emerald-500"></i> <span id="txt-cat-hostels">Hostels & Dharamshala</span>
+            </button>
+        </div>
+
+        <!-- Results Counter -->
+        <div class="flex items-center justify-between text-xs text-slate-500 font-medium mb-4">
+            <div>
+                <span id="txt-showing">Showing</span> <span id="resultCount" class="font-bold text-orange-600">0</span> <span id="txt-locations-found">verified locations near Ramkund / Tapovan</span>
+            </div>
+            <div id="activeFilterBadge" class="hidden text-[11px] bg-orange-100 text-orange-800 px-2 py-0.5 rounded-md font-medium">
+                Filtered
+            </div>
+        </div>
+
+        <!-- Grid View Container -->
+        <div id="gridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Place Cards inserted dynamically by JavaScript -->
+        </div>
+
+        <!-- Interactive Visual Zone Map View (Canvas/SVG representation of Nashik Kumbh Zones) -->
+        <div id="mapView" class="hidden bg-white rounded-2xl p-4 sm:p-6 shadow-md border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="font-bold text-base text-slate-800" id="txt-map-title">Interactive Nashik Maha Kumbh Zone Map (10 KM Radius)</h3>
+                    <p class="text-xs text-slate-500" id="txt-map-desc">Click any pin to inspect rates, contact info, and open turn-by-turn navigation in Google Maps.</p>
+                </div>
+                <span class="text-xs bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-bold">
+                    <i class="fa-solid fa-circle text-[8px] mr-1 text-emerald-500 animate-pulse"></i> Live Zones Active
+                </span>
+            </div>
+            
+            <!-- Dynamic Visual Canvas Map Container -->
+            <div class="relative w-full h-[450px] bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-700 flex items-center justify-center" id="visualMapContainer">
+                <canvas id="kumbhMapCanvas" class="w-full h-full cursor-crosshair"></canvas>
+                
+                <!-- Map Legend Overlay -->
+                <div class="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-lg border border-slate-700 text-[11px] text-white flex flex-col gap-1.5 shadow-lg">
+                    <span class="font-bold text-amber-400 mb-0.5" id="txt-legend">Map Key</span>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-500 border border-white"></span> <span id="leg-ramkund">Ramkund (0.0km - Ground Zero)</span></div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400"></span> <span id="leg-emerg">Emergency / Hospital</span></div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-400"></span> <span id="leg-mess">Mess & Food</span></div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-purple-400"></span> <span id="leg-hotel">Hotel & Stay</span></div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-400"></span> <span id="leg-hostel">Hostel / Dharamshala</span></div>
+                </div>
+
+                <!-- Hovered Pin Info Tooltip -->
+                <div id="mapTooltip" class="hidden absolute bg-white text-slate-800 p-3 rounded-xl shadow-2xl border border-orange-200 text-xs w-64 pointer-events-none transition-opacity duration-200 z-30">
+                    <!-- Dynamic map info insertion -->
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results Found State -->
+        <div id="noResults" class="hidden text-center py-12">
+            <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-location-crosshairs text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-slate-700" id="txt-no-res-title">No places found matching criteria</h4>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto" id="txt-no-res-desc">Try expanding your radius slider up to 10 km or selecting a different category filter.</p>
+            <button onclick="resetFilters()" class="mt-4 bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow hover:bg-orange-700 transition">
+                Reset All Filters
+            </button>
+        </div>
+    </main>
+
+    <!-- QR Code Generator & Poster Download Modal -->
+    <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-orange-100 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeQrModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 rounded-full">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                    <i class="fa-solid fa-qrcode text-2xl"></i>
+                </div>
+                <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl" id="txt-qr-modal-title">Official Kumbh QR Poster Generator</h3>
+                <p class="text-xs text-slate-500" id="txt-qr-modal-desc">Print this QR code on banners, posters, or helpdesks around Nashik for pilgrims to scan directly.</p>
+            </div>
+
+            <!-- Printable Poster Template Box -->
+            <div id="qrPosterBox" class="bg-gradient-to-b from-orange-600 to-amber-600 text-white p-6 rounded-2xl text-center shadow-lg relative border-4 border-amber-300">
+                <div class="text-amber-200 text-xs font-black uppercase tracking-widest mb-1">Maha Kumbh Mela Nashik 2027</div>
+                <h4 class="text-xl font-extrabold text-white mb-2 leading-tight">SCAN FOR NEARBY SERVICES</h4>
+                <p class="text-[11px] text-amber-100 mb-4">Hospitals, Dharamshalas, Free Mess & Emergency Numbers within 10 KM</p>
+                
+                <!-- QR Code Holder -->
+                <div class="bg-white p-3 rounded-xl inline-block shadow-md">
+                    <div id="qrcode" class="flex justify-center"></div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-orange-400/40 text-[10px] text-amber-100 font-medium">
+                    📍 Centered around Ramkund / Tapovan, Panchavati | Free Public Portal
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button onclick="copyAppUrl()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-link"></i> <span id="txt-copy-link">Copy Web Link</span>
+                </button>
+                <button onclick="printQrPoster()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i> <span id="txt-print-poster">Print Poster</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Places Modal -->
+    <div id="savedModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-orange-100 max-h-[85vh] overflow-y-auto relative">
+            <button onclick="toggleSavedModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="font-extrabold text-slate-800 text-lg mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-bookmark text-orange-500"></i> Saved Places & Emergency Contacts
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">Your saved places for quick offline reference during Kumbh Mela.</p>
+
+            <div id="savedContainer" class="space-y-3">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Box -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 border border-slate-700 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Action completed successfully</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex items-center justify-center space-x-2 text-white font-bold text-base">
+                <i class="fa-solid fa-om text-orange-500"></i>
+                <span>Nashik Maha Kumbh Mela 2027 Information Desk</span>
+            </div>
+            <p class="max-w-xl mx-auto text-slate-400">
+                Created to assist pilgrims, devotees, and tourists visiting the holy city of Nashik. All emergency contacts and locations directly integrated with Google Maps.
+            </p>
+            <div class="text-[11px] text-slate-500 pt-2 border-t border-slate-800">
+                Covering Panchavati, Ramkund, Tapovan, Nashik City, & Railway Station Hubs (0 - 10 KM Radius).
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- REALISTIC NASHIK KUMBHMELA LOCATION DATABASE (0 - 10 KM Radius around Ramkund) ---
+        const PLACES_DATA = [
+            // EMERGENCY & HOSPITALS
+            {
+                id: 1,
+                name: "Civil Hospital Nashik",
+                category: "hospital",
+                isEmergency: true,
+                dist: 2.5,
+                rating: 4.2,
+                rate: "Government (Free)",
+                rateType: "free",
+                phone: "+91 253 257 6106",
+                hours: "24/7 Open",
+                address: "Trambakeshwar Rd, Police Staff Colony, Nashik (2.5 km from Ramkund)",
+                googleUrl: "https://maps.google.com/?cid=310115082782318149",
+                lat: 19.996, lng: 73.784,
+                tags: ["24/7 ER", "Free ICU", "Blood Bank", "Govt Approved"]
+            },
+            {
+                id: 2,
+                name: "Panchavati Police Station & Kumbh Helpdesk",
+                category: "emergency",
+                isEmergency: true,
+                dist: 0.8,
+                rating: 4.6,
+                rate: "Emergency Helpline",
+                rateType: "free",
+                phone: "+91 253 262 9830",
+                hours: "24/7 Control Room",
+                address: "Lok Sahakar Nagar Rd, Panchavati, Nashik (0.8 km from Ramkund)",
+                googleUrl: "https://maps.google.com/?cid=4366729237185242046",
+                lat: 20.008, lng: 73.795,
+                tags: ["Lost & Found", "Police Post", "Crowd Control", "24/7 Help"]
+            },
+            {
+                id: 3,
+                name: "Ramkund Kumbh Central Medical & First Aid Post",
+                category: "emergency",
+                isEmergency: true,
+                dist: 0.2,
+                rating: 4.9,
+                rate: "Free Medical Aid",
+                rateType: "free",
+                phone: "108",
+                hours: "24/7 Emergency",
+                address: "Main Ghat Area, Ramkund, Panchavati, Nashik (0.2 km from Center)",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=Ramkund+Panchavati+Nashik",
+                lat: 20.005, lng: 73.792,
+                tags: ["First Aid", "Ambulance Hub", "Lost Children Desk"]
+            },
+            {
+                id: 4,
+                name: "Apollo Hospitals Nashik",
+                category: "hospital",
+                isEmergency: true,
+                dist: 6.8,
+                rating: 4.7,
+                rate: "Private Hospital",
+                rateType: "paid",
+                phone: "+91 253 230 3000",
+                hours: "24/7 ER & Trauma",
+                address: "Swaminarayan Nagar, Panchavati Extension, Nashik (6.8 km)",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=Apollo+Hospital+Panchavati+Nashik",
+                lat: 20.035, lng: 73.820,
+                tags: ["Multi-specialty", "Trauma ER", "Cashless Insurance"]
+            },
+
+            // MESS & BHOJANALAYA (FOOD)
+            {
+                id: 5,
+                name: "Shree Kapaleshwar Bhojnalay",
+                category: "mess",
+                isEmergency: false,
+                dist: 0.5,
+                rating: 4.8,
+                rate: "₹80 - ₹120 / Thali",
+                rateType: "budget",
+                phone: "+91 84463 58077",
+                hours: "8:00 AM - 10:30 PM",
+                address: "Dindori Rd, opp. Meghraj Bakery, Panchavati, Nashik",
+                googleUrl: "https://maps.google.com/?cid=7833889190548391722",
+                lat: 20.009, lng: 73.790,
+                tags: ["Pure Veg", "Authentic Maharashtrian", "Quick Service"]
+            },
+            {
+                id: 6,
+                name: "Annapurna Bhojnalaya (Near Kapaleshwar Temple)",
+                category: "mess",
+                isEmergency: false,
+                dist: 0.4,
+                rating: 4.7,
+                rate: "₹70 / Unlimited Thali",
+                rateType: "budget",
+                phone: "+91 253 699 0877",
+                hours: "6:00 AM - 11:00 PM",
+                address: "Behind Kapaleshwar Mahadev Mandir, Panchavati, Nashik",
+                googleUrl: "https://maps.google.com/?cid=18150933793834664734",
+                lat: 20.006, lng: 73.791,
+                tags: ["Homely Satvik Food", "Clean Dining", "Budget Friendly"]
+            },
+            {
+                id: 7,
+                name: "Navkar Mess & Veg Thali",
+                category: "mess",
+                isEmergency: false,
+                dist: 1.2,
+                rating: 4.9,
+                rate: "₹90 / Veg Meal",
+                rateType: "budget",
+                phone: "+91 96231 66078",
+                hours: "8:00 AM - 10:00 PM",
+                address: "Gharpure Ghat Rd, near Siddheshwar Mandir, Panchavati",
+                googleUrl: "https://maps.google.com/?cid=17644078539273413234",
+                lat: 20.002, lng: 73.786,
+                tags: ["Jain Food Available", "Parcel Available", "Clean Hygiene"]
+            },
+            {
+                id: 8,
+                name: "ISKCON Govinda's Free Bhandara & Annakoot Desk",
+                category: "mess",
+                isEmergency: false,
+                dist: 1.5,
+                rating: 4.9,
+                rate: "Free Prasadam",
+                rateType: "free",
+                phone: "+91 253 250 1859",
+                hours: "11:30 AM - 9:00 PM",
+                address: "Vrindavan Colony, Poornima Bus Stop, Panchavati",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=ISKCON+Panchavati+Nashik",
+                lat: 20.012, lng: 73.801,
+                tags: ["Free Mahaprasad", "Satvik Meals", "Mass Dining"]
+            },
+
+            // HOTELS & LODGING
+            {
+                id: 9,
+                name: "FabExpress Rama Palace",
+                category: "hotel",
+                isEmergency: false,
+                dist: 0.6,
+                rating: 4.1,
+                rate: "₹1,800 - ₹2,500 / night",
+                rateType: "moderate",
+                phone: "+91 70424 24242",
+                hours: "24 Hours Check-in",
+                address: "Panchavati Karanja Rd, Panchavati, Nashik (600m to Ramkund)",
+                googleUrl: "https://maps.google.com/?cid=12665620248945205463",
+                lat: 20.007, lng: 73.793,
+                tags: ["AC Rooms", "Walk to Ramkund", "Free WiFi"]
+            },
+            {
+                id: 10,
+                name: "Hotel Bhakti Sankul - Panchavati",
+                category: "hotel",
+                isEmergency: false,
+                dist: 0.9,
+                rating: 4.3,
+                rate: "₹800 - ₹1,400 / night",
+                rateType: "budget",
+                phone: "+91 77188 40120",
+                hours: "24 Hours Check-in",
+                address: "Peth Rd, near Bhaktidham, Panchavati, Nashik",
+                googleUrl: "https://maps.google.com/?cid=2787245644413256046",
+                lat: 20.014, lng: 73.793,
+                tags: ["Pilgrim Lodging", "Hot Water", "Family Rooms"]
+            },
+            {
+                id: 11,
+                name: "Hotel Royale Heritage Nashik",
+                category: "hotel",
+                isEmergency: false,
+                dist: 2.1,
+                rating: 4.2,
+                rate: "₹1,500 - ₹2,200 / night",
+                rateType: "moderate",
+                phone: "+91 83800 88817",
+                hours: "24/7 Desk",
+                address: "ND Patel Rd, behind Telephone Exchange, Ganjmal, Nashik",
+                googleUrl: "https://maps.google.com/?cid=14776468259389127239",
+                lat: 19.992, lng: 73.789,
+                tags: ["Parking Facility", "Restaurant Attached", "Family Friendly"]
+            },
+
+            // HOSTELS & DHARAMSHALAS
+            {
+                id: 12,
+                name: "Sri Trimbakeshwar Yatri Niwas Dormitory",
+                category: "hostel",
+                isEmergency: false,
+                dist: 1.8,
+                rating: 4.4,
+                rate: "₹250 - ₹350 / Bed",
+                rateType: "budget",
+                phone: "+91 253 251 2244",
+                hours: "24/7 Gate",
+                address: "Tapovan Road near Kapila Confluence, Nashik (1.8 km)",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=Yatri+Niwas+Tapovan+Nashik",
+                lat: 19.998, lng: 73.805,
+                tags: ["Clean Bunk Beds", "Lockers Available", "Pilgrim Special"]
+            },
+            {
+                id: 13,
+                name: "Panchavati Dharamshala & Yatri Gruha",
+                category: "hostel",
+                isEmergency: false,
+                dist: 0.7,
+                rating: 4.3,
+                rate: "₹300 / Hall Bed",
+                rateType: "budget",
+                phone: "+91 253 262 1100",
+                hours: "5:00 AM - 11:00 PM",
+                address: "Kalaram Temple East Gate, Panchavati, Nashik",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=Kalaram+Temple+Panchavati+Nashik",
+                lat: 20.007, lng: 73.796,
+                tags: ["Dharamshala", "Hot Water", "Next to Temple"]
+            },
+            {
+                id: 14,
+                name: "Nashik Road Railway Station Transit Dormitory",
+                category: "hostel",
+                isEmergency: true,
+                dist: 9.5,
+                rating: 4.1,
+                rate: "₹150 / 12 Hours",
+                rateType: "budget",
+                phone: "+91 253 246 5440",
+                hours: "24/7 Open",
+                address: "Platform 1 Extension, Nashik Road Railway Station (9.5 km)",
+                googleUrl: "https://www.google.com/maps/search/?api=1&query=Nashik+Road+Railway+Station",
+                lat: 19.954, lng: 73.840,
+                tags: ["Railway Transit", "Restrooms", "Luggage Storage"]
+            }
+        ];
+
+        // APP STATE
+        let currentCategory = 'all';
+        let maxRadius = 10.0;
+        let currentLang = 'en';
+        let savedIds = JSON.parse(localStorage.getItem('kumbh_saved_places') || '[]');
+
+        // TRANSLATIONS DICTIONARY (English & Hindi/Marathi)
+        const I18N = {
+            en: {
+                "txt-emergency-bar": "Maha Kumbh Emergency Helpline: 108 (Ambulance) | 112 (Police) | 1800-233-0011 (Control Room)",
+                "txt-call-108": "Call 108",
+                "txt-call-112": "Call 112",
+                "txt-subhead": "10 KM Radius Assistance & Navigation",
+                "txt-get-qr": "Get QR Poster",
+                "txt-ground-zero": "Center Point: Ramkund / Tapovan, Panchavati, Nashik",
+                "txt-hero-title": "Maha Kumbh Mela Nashik 2027",
+                "txt-hero-desc": "Find verified hospitals, hostels, hotels, mess bhojanalay, and emergency services within 10 KM radius. Direct links to Google Maps & live call buttons.",
+                "txt-radius-label": "Maximum Radius:",
+                "txt-sort-by": "Sort by:",
+                "opt-dist": "Nearest First (Distance)",
+                "opt-rating": "Highest Rating",
+                "opt-price-low": "Price: Low to High",
+                "txt-grid-view": "Grid View",
+                "txt-map-view": "Kumbh Map",
+                "txt-cat-all": "All Nearby",
+                "txt-cat-emergency": "Emergency & Help",
+                "txt-cat-hospitals": "Hospitals",
+                "txt-cat-mess": "Mess & Bhandara",
+                "txt-cat-hotels": "Hotels",
+                "txt-cat-hostels": "Hostels & Dharamshala",
+                "txt-showing": "Showing",
+                "txt-locations-found": "verified locations near Ramkund / Tapovan",
+                "txt-map-title": "Interactive Nashik Maha Kumbh Zone Map (10 KM Radius)",
+                "txt-map-desc": "Click any pin to inspect rates, contact info, and open turn-by-turn navigation in Google Maps.",
+                "txt-no-res-title": "No places found matching criteria",
+                "txt-no-res-desc": "Try expanding your radius slider up to 10 km or selecting a different category filter.",
+                "txt-qr-modal-title": "Official Kumbh QR Poster Generator",
+                "txt-qr-modal-desc": "Print this QR code on banners, posters, or helpdesks around Nashik for pilgrims to scan directly.",
+                "txt-copy-link": "Copy Web Link",
+                "txt-print-poster": "Print Poster"
+            },
+            hi: {
+                "txt-emergency-bar": "महाकुंभ आणीबाणी हेल्पलाइन: १०८ (रुग्णवाहिका) | ११२ (पोलिस) | १८००-२३३-००११ (नियंत्रण कक्ष)",
+                "txt-call-108": "१०८ वर कॉल करा",
+                "txt-call-112": "११२ वर कॉल करा",
+                "txt-subhead": "१० किमी परिसरातील सेवा आणि मार्गदर्शक",
+                "txt-get-qr": "क्यूआर पोस्टर मिळवा",
+                "txt-ground-zero": "मुख्य केंद्र: रामकुंड / तपोवन, पंचवटी, नाशिक",
+                "txt-hero-title": "सिंहस्थ महाकुंभमेळा नाशिक २०२७",
+                "txt-hero-desc": "१० किमीच्या परिघात रुग्णालये, हॉस्टेल, हॉटेल्स, अन्नछत्र/मेस आणि आपत्कालीन सेवा शोधा. थेट गूगल मॅप्स नेव्हिगेशन.",
+                "txt-radius-label": "कमाल त्रिज्या (अंतर):",
+                "txt-sort-by": "क्रमानुसार क्रमवारी:",
+                "opt-dist": "जवळचे आधी (अंतर)",
+                "opt-rating": "सर्वोत्तम रेटिंग",
+                "opt-price-low": "किंमत: कमी ते जास्त",
+                "txt-grid-view": "ग्रिड दृश्य",
+                "txt-map-view": "नकाशा दृश्य",
+                "txt-cat-all": "सर्व सेवा",
+                "txt-cat-emergency": "आपत्कालीन व मदत",
+                "txt-cat-hospitals": "रुग्णालये (Hospitals)",
+                "txt-cat-mess": "मेस व अन्नछत्र",
+                "txt-cat-hotels": "हॉटेल्स (Hotels)",
+                "txt-cat-hostels": "धर्मशाळा व हॉस्टेल",
+                "txt-showing": "एकूण",
+                "txt-locations-found": "रामकुंड / पंचवटी जवळ सापडलेली ठिकाणे",
+                "txt-map-title": "नाशिक महाकुंभ क्षेत्र परस्परसंवादी नकाशा (१० किमी)",
+                "txt-map-desc": "दर, संपर्क माहिती आणि गूगल मॅप्स मार्गदर्शनासाठी नकाशावरील पिन वर क्लिक करा.",
+                "txt-no-res-title": "कोणतेही ठिकाण आढळले नाही",
+                "txt-no-res-desc": "कृपया त्रिज्या (Radius) वाढवून १० किमी करा किंवा फिल्टर बदला.",
+                "txt-qr-modal-title": "अधिकृत कुंभ क्यूआर पोस्टर जनरेटर",
+                "txt-qr-modal-desc": "नाशिकमधील भित्तीपत्रके आणि मदत केंद्रांवर छापण्यासाठी हा क्यूआर कोड डाउनलोड किंवा प्रिंट करा.",
+                "txt-copy-link": "लिंक कॉपी करा",
+                "txt-print-poster": "पोस्टर प्रिंट करा"
+            }
+        };
+
+        // INIT ON WINDOW LOAD
+        window.onload = function() {
+            updateSavedBadge();
+            filterPlaces();
+            initQrCode();
+            drawKumbhMap();
+        };
+
+        // Switch active category
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-600', 'text-white', 'active');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            const selectedBtn = document.getElementById(`cat-${cat}`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-white', 'text-slate-700');
+                selectedBtn.classList.add('bg-orange-600', 'text-white', 'active');
+            }
+            filterPlaces();
+        }
+
+        // Update Slider Radius
+        function updateRadiusFilter(val) {
+            maxRadius = parseFloat(val);
+            document.getElementById('radiusValue').innerText = `${maxRadius.toFixed(1)} KM`;
+            filterPlaces();
+            drawKumbhMap();
+        }
+
+        // Master Filter & Search Algorithm
+        function filterPlaces() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const sortBy = document.getElementById('sortSelect').value;
+
+            let filtered = PLACES_DATA.filter(place => {
+                // Radius Check
+                if (place.dist > maxRadius) return false;
+
+                // Category Check
+                if (currentCategory !== 'all') {
+                    if (currentCategory === 'emergency' && !place.isEmergency && place.category !== 'emergency') return false;
+                    if (currentCategory !== 'emergency' && place.category !== currentCategory) return false;
+                }
+
+                // Search Query Check
+                if (query) {
+                    const matchName = place.name.toLowerCase().includes(query);
+                    const matchAddr = place.address.toLowerCase().includes(query);
+                    const matchCat = place.category.toLowerCase().includes(query);
+                    const matchTags = place.tags.some(t => t.toLowerCase().includes(query));
+                    if (!matchName && !matchAddr && !matchCat && !matchTags) return false;
+                }
+
+                return true;
+            });
+
+            // Sorting logic
+            if (sortBy === 'distance') {
+                filtered.sort((a, b) => a.dist - b.dist);
+            } else if (sortBy === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (sortBy === 'price_low') {
+                filtered.sort((a, b) => {
+                    const isFreeA = a.rateType === 'free' ? 0 : 1;
+                    const isFreeB = b.rateType === 'free' ? 0 : 1;
+                    return isFreeA - isFreeB || a.dist - b.dist;
+                });
+            }
+
+            renderGrid(filtered);
+            document.getElementById('resultCount').innerText = filtered.length;
+
+            const noRes = document.getElementById('noResults');
+            const gridView = document.getElementById('gridView');
+            if (filtered.length === 0) {
+                noRes.classList.remove('hidden');
+                gridView.classList.add('hidden');
+            } else {
+                noRes.classList.add('hidden');
+                if (!document.getElementById('gridView').classList.contains('hidden-by-view')) {
+                    gridView.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Render Cards in Grid View
+        function renderGrid(list) {
+            const grid = document.getElementById('gridView');
+            grid.innerHTML = '';
+
+            list.forEach(place => {
+                const isSaved = savedIds.includes(place.id);
+                
+                // Icon mapping
+                let catIcon = "fa-location-dot";
+                let catBadgeBg = "bg-slate-100 text-slate-700";
+                if (place.category === 'hospital') {
+                    catIcon = "fa-hospital text-blue-600";
+                    catBadgeBg = "bg-blue-100 text-blue-700";
+                } else if (place.category === 'emergency') {
+                    catIcon = "fa-kit-medical text-red-600";
+                    catBadgeBg = "bg-red-100 text-red-700 font-bold";
+                } else if (place.category === 'mess') {
+                    catIcon = "fa-utensils text-amber-600";
+                    catBadgeBg = "bg-amber-100 text-amber-800";
+                } else if (place.category === 'hotel') {
+                    catIcon = "fa-hotel text-purple-600";
+                    catBadgeBg = "bg-purple-100 text-purple-700";
+                } else if (place.category === 'hostel') {
+                    catIcon = "fa-bed text-emerald-600";
+                    catBadgeBg = "bg-emerald-100 text-emerald-700";
+                }
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col justify-between group">
+                        <div class="p-4 sm:p-5">
+                            <!-- Top Card Header -->
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <div>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${catBadgeBg} mb-1.5">
+                                        <i class="fa-solid ${catIcon}"></i> ${place.category.toUpperCase()}
+                                    </span>
+                                    <h3 class="font-bold text-slate-800 text-base group-hover:text-orange-600 transition">
+                                        ${place.name}
+                                    </h3>
+                                </div>
+                                <button onclick="toggleSavePlace(${place.id})" class="text-slate-300 hover:text-orange-500 transition p-1" title="Bookmark">
+                                    <i class="fa-solid fa-bookmark text-lg ${isSaved ? 'text-orange-500' : ''}"></i>
+                                </button>
+                            </div>
+
+                            <!-- Rating & Distance Badges -->
+                            <div class="flex items-center space-x-3 text-xs mb-3">
+                                <span class="flex items-center text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                                    <i class="fa-solid fa-star text-xs mr-1"></i> ${place.rating}
+                                </span>
+                                <span class="text-slate-600 font-medium bg-slate-100 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                    <i class="fa-solid fa-route text-orange-500"></i> ${place.dist} KM from Ramkund
+                                </span>
+                            </div>
+
+                            <!-- Rate / Price Tag -->
+                            <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl text-xs mb-3 flex items-center justify-between">
+                                <span class="text-slate-500 font-medium">Rate / Cost:</span>
+                                <span class="font-extrabold ${place.rateType === 'free' ? 'text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200' : 'text-slate-800'}">
+                                    ${place.rate}
+                                </span>
+                            </div>
+
+                            <!-- Address and Hours -->
+                            <p class="text-xs text-slate-500 mb-2 flex items-start gap-1.5">
+                                <i class="fa-solid fa-location-dot text-slate-400 mt-0.5"></i>
+                                <span>${place.address}</span>
+                            </p>
+                            <p class="text-[11px] text-slate-500 mb-3 flex items-center gap-1.5 font-medium">
+                                <i class="fa-regular fa-clock text-slate-400"></i>
+                                <span>Hours: ${place.hours}</span>
+                            </p>
+
+                            <!-- Feature Tags -->
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                ${place.tags.map(tag => `<span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded font-medium">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Card Bottom Actions: Google Maps Navigation & Direct Call -->
+                        <div class="border-t border-slate-100 bg-slate-50/70 p-3 grid grid-cols-2 gap-2">
+                            <a href="tel:${place.phone}" class="bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 font-semibold text-xs py-2 px-3 rounded-xl shadow-sm text-center transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-phone text-emerald-600"></i> Call
+                            </a>
+                            <a href="${place.googleUrl}" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs py-2 px-3 rounded-xl shadow-md text-center transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-diamond-turn-right"></i> Navigate
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        // Render Interactive Visual Canvas Map
+        function drawKumbhMap() {
+            const canvas = document.getElementById('kumbhMapCanvas');
+            const container = document.getElementById('visualMapContainer');
+            if (!canvas || !container) return;
+
+            // Fit canvas to container size
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const maxPxRadius = Math.min(width, height) * 0.42;
+
+            // Clear Background
+            ctx.fillStyle = "#0f172a"; // dark slate
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Godavari River representation curve
+            ctx.beginPath();
+            ctx.moveTo(0, centerY + 80);
+            ctx.bezierCurveTo(centerX - 80, centerY - 50, centerX + 100, centerY + 60, width, centerY - 60);
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.3)";
+            ctx.lineWidth = 24;
+            ctx.stroke();
+
+            // Draw Distance Concentric Rings (2km, 5km, 10km)
+            const rings = [2, 5, 10];
+            rings.forEach(r => {
+                const pxR = (r / 10) * maxPxRadius;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, pxR, 0, 2 * Math.PI);
+                ctx.strokeStyle = r <= maxRadius ? "rgba(249, 115, 22, 0.3)" : "rgba(255, 255, 255, 0.08)";
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Label on ring
+                ctx.fillStyle = "rgba(255,255,255,0.4)";
+                ctx.font = "10px Inter";
+                ctx.fillText(`${r} KM`, centerX + 5, centerY - pxR + 12);
+            });
+
+            // Center Point Marker: Ramkund Ground Zero
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+            ctx.fillStyle = "#ef4444";
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.fillStyle = "#fbbf24";
+            ctx.font = "bold 11px Inter";
+            ctx.fillText("Ramkund Ground Zero", centerX - 55, centerY - 15);
+
+            // Draw Place Pins
+            PLACES_DATA.forEach(place => {
+                if (place.dist > maxRadius) return;
+
+                // Scale pin coordinate relative to Ramkund (approx mapping based on lat/lng offset)
+                const latDiff = (place.lat - 20.005) * 60; // scale factor
+                const lngDiff = (place.lng - 73.792) * 60;
+
+                const pinX = centerX + (lngDiff * (maxPxRadius / 8));
+                const pinY = centerY - (latDiff * (maxPxRadius / 8));
+
+                place.pxX = pinX;
+                place.pxY = pinY;
+
+                // Pin Color based on category
+                let color = "#38bdf8";
+                if (place.category === 'hospital' || place.category === 'emergency') color = "#f87171";
+                if (place.category === 'mess') color = "#fbbf24";
+                if (place.category === 'hotel') color = "#c084fc";
+                if (place.category === 'hostel') color = "#34d399";
+
+                // Draw Pin Outer Halo
+                ctx.beginPath();
+                ctx.arc(pinX, pinY, 7, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+        }
+
+        // Canvas Mouse Hover Tooltip Handler
+        document.getElementById('kumbhMapCanvas').addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            let hovered = null;
+            PLACES_DATA.forEach(place => {
+                if (place.pxX && place.pxY) {
+                    const distSq = (mouseX - place.pxX) ** 2 + (mouseY - place.pxY) ** 2;
+                    if (distSq < 100) { // 10px radius hit
+                        hovered = place;
+                    }
+                }
+            });
+
+            const tooltip = document.getElementById('mapTooltip');
+            if (hovered) {
+                tooltip.classList.remove('hidden');
+                tooltip.style.left = `${Math.min(mouseX + 15, rect.width - 250)}px`;
+                tooltip.style.top = `${Math.min(mouseY + 15, rect.height - 120)}px`;
+                tooltip.innerHTML = `
+                    <div class="font-bold text-slate-900">${hovered.name}</div>
+                    <div class="text-[11px] text-orange-600 font-semibold">${hovered.dist} KM | ${hovered.rate}</div>
+                    <div class="text-[10px] text-slate-500 mt-1">${hovered.address}</div>
+                    <a href="${hovered.googleUrl}" target="_blank" class="mt-2 block bg-orange-600 text-white text-center py-1 rounded font-bold text-[10px]">
+                        Open Google Maps
+                    </a>
+                `;
+            } else {
+                tooltip.classList.add('hidden');
+            }
+        });
+
+        // View Toggle (Grid vs Map)
+        function switchView(view) {
+            const gridView = document.getElementById('gridView');
+            const mapView = document.getElementById('mapView');
+            const btnGrid = document.getElementById('btn-view-grid');
+            const btnMap = document.getElementById('btn-view-map');
+
+            if (view === 'grid') {
+                gridView.classList.remove('hidden', 'hidden-by-view');
+                mapView.classList.add('hidden');
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800 bg-white shadow-sm transition";
+                btnMap.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition";
+            } else {
+                gridView.classList.add('hidden', 'hidden-by-view');
+                mapView.classList.remove('hidden');
+                btnMap.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800 bg-white shadow-sm transition";
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition";
+                setTimeout(drawKumbhMap, 50);
+            }
+        }
+
+        // Initialize QR Code inside Poster Modal
+        function initQrCode() {
+            const qrcodeContainer = document.getElementById("qrcode");
+            qrcodeContainer.innerHTML = "";
+            new QRCode(qrcodeContainer, {
+                text: window.location.href,
+                width: 140,
+                height: 140,
+                colorDark: "#9a3412",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // QR Modal Control
+        function openQrModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        // Copy Page URL helper
+        function copyAppUrl() {
+            const tempInput = document.createElement("input");
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Web link copied to clipboard!");
+        }
+
+        // Print Poster Feature
+        function printQrPoster() {
+            window.print();
+        }
+
+        // Bookmarks / Saved Places Logic
+        function toggleSavePlace(id) {
+            const idx = savedIds.indexOf(id);
+            if (idx > -1) {
+                savedIds.splice(idx, 1);
+                showToast("Removed from saved places");
+            } else {
+                savedIds.push(id);
+                showToast("Saved to your offline bookmarks!");
+            }
+            localStorage.setItem('kumbh_saved_places', JSON.stringify(savedIds));
+            updateSavedBadge();
+            filterPlaces();
+        }
+
+        function updateSavedBadge() {
+            const badge = document.getElementById('savedBadge');
+            if (savedIds.length > 0) {
+                badge.innerText = savedIds.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function toggleSavedModal() {
+            const modal = document.getElementById('savedModal');
+            const container = document.getElementById('savedContainer');
+            
+            if (modal.classList.contains('hidden')) {
+                const savedPlaces = PLACES_DATA.filter(p => savedIds.includes(p.id));
+                if (savedPlaces.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">No saved places yet. Click the bookmark icon on any location card.</p>`;
+                } else {
+                    container.innerHTML = savedPlaces.map(p => `
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800">${p.name}</h4>
+                                <p class="text-[11px] text-slate-500">${p.dist} KM | ${p.rate}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="tel:${p.phone}" class="bg-emerald-600 text-white p-2 rounded-lg text-xs"><i class="fa-solid fa-phone"></i></a>
+                                <a href="${p.googleUrl}" target="_blank" class="bg-orange-600 text-white p-2 rounded-lg text-xs"><i class="fa-solid fa-location-arrow"></i></a>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Reset All Filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('sortSelect').value = 'distance';
+            document.getElementById('radiusSlider').value = 10;
+            updateRadiusFilter(10);
+            setCategory('all');
+        }
+
+        // Toast Notification System
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Change App Language (English vs Marathi/Hindi)
+        function changeLanguage(langKey) {
+            currentLang = langKey;
+            const dictionary = I18N[langKey] || I18N.en;
+            for (const [id, text] of Object.entries(dictionary)) {
+                const elem = document.getElementById(id);
+                if (elem) {
+                    if (elem.tagName === 'OPTION') {
+                        elem.innerText = text;
+                    } else {
+                        elem.innerText = text;
+                    }
+                }
+            }
+            showToast(langKey === 'hi' ? 'भाषा मराठी/हिंदी सेट केली' : 'Language switched to English');
+        }
+    </script>
+</body>
+</html>

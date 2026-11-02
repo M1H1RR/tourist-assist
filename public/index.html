@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Tourist Assist | QR-Based Pilgrim Assistance & Nashik Tourism Discovery</title>
+  <meta name="description" content="Tourist Assist - Official QR-based pilgrim assistance, essential services directory, tourism discovery, and local opportunity platform for Nashik and Maha Kumbh Mela 2027.">
+  <meta name="theme-color" content="#D9480F">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Top Emergency Helpline Banner -->
+  <aside class="emergency-top-banner" role="complementary" aria-label="Emergency Helplines">
+    <div class="emergency-top-container">
+      <div class="emergency-info-text">
+        <span class="emergency-pulse-badge"></span>
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <strong id="lbl-emergency-banner-title">Maha Kumbh 24/7 Emergency Helplines:</strong>
+        <span id="lbl-emergency-banner-desc">Ambulance 108 | Police 112 | NMC Disaster Cell 1077 | Toll-Free 1800-233-0011</span>
+      </div>
+      <div class="emergency-quick-calls">
+        <a href="tel:108" class="pill-emergency-btn" id="btn-call-108" aria-label="Call 108 Ambulance">
+          <i class="fa-solid fa-phone"></i> <span>108 Ambulance</span>
+        </a>
+        <a href="tel:112" class="pill-emergency-btn" id="btn-call-112" aria-label="Call 112 Police">
+          <i class="fa-solid fa-shield-halved"></i> <span>112 Police</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Sticky App Header -->
+  <header class="app-header" role="banner">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#home" class="brand-wrapper" id="brand-logo-link" onclick="App.navigate('home')">
+        <div class="brand-icon">
+          <i class="fa-solid fa-om"></i>
+        </div>
+        <div class="brand-info">
+          <h1>Tourist <span>Assist</span></h1>
+          <p class="brand-tagline" id="lbl-brand-tagline">Nashik Maha Kumbh Mela 2027 & Tourism</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav" role="navigation" aria-label="Main Navigation">
+        <button class="nav-link active" id="nav-btn-home" onclick="App.navigate('home')">
+          <i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Home</span>
+        </button>
+        <button class="nav-link" id="nav-btn-services" onclick="App.navigate('services')">
+          <i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_services">Pilgrim Assistance</span>
+        </button>
+        <button class="nav-link" id="nav-btn-explore" onclick="App.navigate('explore')">
+          <i class="fa-solid fa-compass"></i> <span data-i18n="nav_explore">Explore Nashik</span>
+        </button>
+        <button class="nav-link" id="nav-btn-connect" onclick="App.navigate('connect')">
+          <i class="fa-solid fa-people-arrows"></i> <span data-i18n="nav_connect">Local Connect</span>
+        </button>
+        <button class="nav-link" id="nav-btn-qr" onclick="App.navigate('qr')">
+          <i class="fa-solid fa-qrcode"></i> <span data-i18n="nav_qr">QR Hub</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Language Switcher -->
+        <select class="lang-selector" id="lang-select" onchange="App.setLanguage(this.value)" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="mr">मराठी / हिंदी</option>
+        </select>
+
+        <!-- Network Connectivity Indicator -->
+        <div class="network-badge online" id="network-status-badge" title="Network status">
+          <i class="fa-solid fa-wifi"></i> <span id="network-status-text">Online</span>
+        </div>
+
+        <!-- Admin Portal Trigger Button -->
+        <button class="btn-header-cta" id="btn-admin-nav" onclick="App.navigate('admin')">
+          <i class="fa-solid fa-lock"></i> <span id="lbl-admin-btn">Admin</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Offline Connectivity Notice Alert -->
+  <div class="offline-banner-alert" id="offline-alert-box" role="alert">
+    <i class="fa-solid fa-plane-slash"></i>
+    <span id="offline-alert-msg">You are currently offline. Displaying cached essential services and attraction data from your device storage. Real-time updates and new submissions require internet.</span>
+  </div>
+
+  <!-- Mobile Bottom Tab Navigation Bar -->
+  <nav class="bottom-nav" role="navigation" aria-label="Mobile Navigation">
+    <div class="bottom-nav-item active" id="mob-nav-home" onclick="App.navigate('home')">
+      <i class="fa-solid fa-house"></i>
+      <span data-i18n="nav_home">Home</span>
+    </div>
+    <div class="bottom-nav-item" id="mob-nav-services" onclick="App.navigate('services')">
+      <i class="fa-solid fa-hand-holding-heart"></i>
+      <span data-i18n="nav_services">Assistance</span>
+    </div>
+    <div class="bottom-nav-item" id="mob-nav-explore" onclick="App.navigate('explore')">
+      <i class="fa-solid fa-compass"></i>
+      <span data-i18n="nav_explore">Explore</span>
+    </div>
+    <div class="bottom-nav-item" id="mob-nav-connect" onclick="App.navigate('connect')">
+      <i class="fa-solid fa-people-arrows"></i>
+      <span data-i18n="nav_connect">Connect</span>
+    </div>
+    <div class="bottom-nav-item" id="mob-nav-qr" onclick="App.navigate('qr')">
+      <i class="fa-solid fa-qrcode"></i>
+      <span data-i18n="nav_qr">QR Hub</span>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: HOME PAGE                                                        -->
+  <!-- ========================================================================= -->
+  <main id="view-home" class="view-container active-view" role="main">
+    
+    <!-- Hero Section -->
+    <section class="hero-banner" aria-labelledby="hero-main-title">
+      <div class="hero-badge-tag">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Nashik Maha Kumbh Mela 2027 & Heritage Corridor</span>
+      </div>
+      <h2 class="hero-title" id="hero-main-title">
+        Bridging Pilgrims, Places, & <span class="highlight">Local Nashik.</span>
+      </h2>
+      <p class="hero-subtitle" id="hero-main-subtitle">
+        Tourist Assist is a QR-based tourist information and essential facility platform for Nashik Kumbh Mela 2027 and Nashik tourism, helping visitors discover destinations, access important facilities, and find useful travel information.
+      </p>
+
+      <div class="hero-cta-group">
+        <button class="btn-primary-hero" id="hero-cta-services" onclick="App.navigate('services')">
+          <i class="fa-solid fa-shield-heart"></i> <span data-i18n="hero_cta_services">Find Essential Services</span>
+        </button>
+        <button class="btn-secondary-hero" id="hero-cta-explore" onclick="App.navigate('explore')">
+          <i class="fa-solid fa-map-location-dot"></i> <span data-i18n="hero_cta_explore">Explore Nashik</span>
+        </button>
+      </div>
+
+      <!-- QR-Based Access Explanation Card -->
+      <div class="qr-access-card" id="home-qr-explainer">
+        <div class="qr-icon-holder">
+          <i class="fa-solid fa-qrcode"></i>
+        </div>
+        <div class="qr-access-text">
+          <h3 id="lbl-qr-title">Instant On-Ground Access via QR Codes</h3>
+          <p id="lbl-qr-desc">
+            Physical QR signs installed at Ramkund, Trimbakeshwar, Tapovan parking, and Railway transit hubs open instantaneous location-specific emergency contacts, water points, and toilet facilities on your smartphone.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Stats Strip -->
+    <section class="stats-strip" aria-label="Platform Statistics" id="home-stats-strip">
+      <div class="stat-item-card">
+        <div class="stat-icon" style="background-color: #FEE2E2; color: #DC2626;">
+          <i class="fa-solid fa-hospital"></i>
+        </div>
+        <div>
+          <div class="stat-value" id="stat-count-services">16+</div>
+          <div class="stat-label">Essential Facilities</div>
+        </div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-icon" style="background-color: #FEF3C7; color: #D97706;">
+          <i class="fa-solid fa-landmark"></i>
+        </div>
+        <div>
+          <div class="stat-value" id="stat-count-attractions">11+</div>
+          <div class="stat-label">Tourist Attractions</div>
+        </div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-icon" style="background-color: #D1FAE5; color: #059669;">
+          <i class="fa-solid fa-user-check"></i>
+        </div>
+        <div>
+          <div class="stat-value" id="stat-count-providers">4+</div>
+          <div class="stat-label">Verified Local Providers</div>
+        </div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-icon" style="background-color: #E0E7FF; color: #4338CA;">
+          <i class="fa-solid fa-qrcode"></i>
+        </div>
+        <div>
+          <div class="stat-value" id="stat-count-qrs">5 Active</div>
+          <div class="stat-label">Dynamic QR Hubs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Access Essential Cards -->
+    <section class="home-services-section" aria-labelledby="heading-quick-services">
+      <div class="section-header">
+        <div>
+          <h2 id="heading-quick-services" data-i18n="heading_quick_services">Essential Services for Pilgrims</h2>
+          <p>Instant guidance on medical, transit, clean sanitation, and stay near Ramkund.</p>
+        </div>
+        <a class="view-all-link" onclick="App.navigate('services')">View all directory <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="quick-access-grid">
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('medical')">
+          <div class="tile-icon" style="background-color: #FEE2E2; color: #DC2626;">
+            <i class="fa-solid fa-notes-medical"></i>
+          </div>
+          <h4>Medical Care</h4>
+          <span>Hospitals & ICU</span>
+        </div>
+
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('transport')">
+          <div class="tile-icon" style="background-color: #DBEAFE; color: #2563EB;">
+            <i class="fa-solid fa-bus-simple"></i>
+          </div>
+          <h4>Transportation</h4>
+          <span>Shuttles & Autos</span>
+        </div>
+
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('sanitation')">
+          <div class="tile-icon" style="background-color: #E0E7FF; color: #4F46E5;">
+            <i class="fa-solid fa-restroom"></i>
+          </div>
+          <h4>Sanitation</h4>
+          <span>Sulabh Toilets</span>
+        </div>
+
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('water')">
+          <div class="tile-icon" style="background-color: #CCFBF1; color: #0D9488;">
+            <i class="fa-solid fa-faucet-drip"></i>
+          </div>
+          <h4>Drinking Water</h4>
+          <span>Free RO Water</span>
+        </div>
+
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('accommodation')">
+          <div class="tile-icon" style="background-color: #FEF3C7; color: #D97706;">
+            <i class="fa-solid fa-hotel"></i>
+          </div>
+          <h4>Accommodation</h4>
+          <span>Yatri Niwas</span>
+        </div>
+
+        <div class="quick-category-tile" onclick="App.filterServicesByCategory('helpdesk')">
+          <div class="tile-icon" style="background-color: #F3E8FF; color: #9333EA;">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <h4>Police & Helpdesk</h4>
+          <span>Lost & Found</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Attractions Section -->
+    <section class="home-explore-section" aria-labelledby="heading-featured-attractions">
+      <div class="section-header">
+        <div>
+          <h2 id="heading-featured-attractions">Explore Nashik Beyond the Mela</h2>
+          <p>Sacred Jyotirlinga shrines, ancient Buddhist caves, misty Sahyadri peaks, and culinary icons.</p>
+        </div>
+        <a class="view-all-link" onclick="App.navigate('explore')">Explore all sights <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="featured-grid" id="home-featured-attractions-grid">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- Local Connect Highlight -->
+    <section class="local-connect-highlight-card" aria-labelledby="heading-connect-intro">
+      <div class="local-connect-text">
+        <h3 id="heading-connect-intro">Local Connect — Supporting Nashik Residents</h3>
+        <p>
+          Connect directly with licensed local spiritual guides, zero-emission e-rickshaws, traditional copper artisans, and family-run satvik bhojanalayas. We empower local livelihoods without intermediary fees.
+        </p>
+      </div>
+      <div class="local-connect-actions">
+        <button class="btn-connect-register" onclick="App.navigate('connect', { openForm: true })">
+          <i class="fa-solid fa-id-card"></i> Register as Provider
+        </button>
+        <button class="btn-connect-browse" onclick="App.navigate('connect')">
+          <i class="fa-solid fa-users"></i> Browse Local Services
+        </button>
+      </div>
+    </section>
+
+    <!-- Offline Pre-Cache Emergency Pack Banner -->
+    <section class="itinerary-builder-panel" style="background: #F1F5F9; border-color: #CBD5E1;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--color-navy); margin-bottom: 4px;">
+            <i class="fa-solid fa-download" style="color: var(--color-saffron);"></i> Offline Emergency Pack for Weak Cellular Connectivity
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--color-slate-700);">
+            During peak Kumbh snan days, mobile network congestion can occur. Cache the entire emergency guide to your browser storage now.
+          </p>
+          <small id="offline-pack-status" style="font-weight: 600; color: var(--color-slate-500);"></small>
+        </div>
+        <button class="btn-primary-hero" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="App.downloadOfflineEmergencyPack()">
+          <i class="fa-solid fa-cloud-arrow-down"></i> Save Offline Pack Now
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: PILGRIM ASSISTANCE (ESSENTIAL SERVICES)                           -->
+  <!-- ========================================================================= -->
+  <main id="view-services" class="view-container" role="main">
+    <div class="section-header">
+      <div>
+        <h2>Pilgrim Assistance Directory</h2>
+        <p>Verified essential amenities, hospitals, sanitation, drinking water, and helpdesks around Nashik.</p>
+      </div>
+      <div>
+        <button class="btn-secondary-hero" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;" onclick="App.openReportModal(null, 'General Feedback')">
+          <i class="fa-solid fa-flag"></i> Report Outdated Info
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="filter-search-container">
+      <div class="search-input-wrapper">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="services-search-input" class="search-bar-input" placeholder="Search by name, landmark, service, or keyword (e.g. 'Civil Hospital', 'RO water', 'Dharamshala')..." oninput="App.handleServicesSearch(this.value)">
+      </div>
+
+      <!-- Category Pills -->
+      <div class="pill-filter-scroll" id="services-category-pills">
+        <button class="filter-pill active" data-cat="all" onclick="App.setServicesCategory('all')">
+          <i class="fa-solid fa-border-all"></i> All Services
+        </button>
+        <button class="filter-pill" data-cat="medical" onclick="App.setServicesCategory('medical')">
+          <i class="fa-solid fa-notes-medical"></i> Medical & Hospitals
+        </button>
+        <button class="filter-pill" data-cat="transport" onclick="App.setServicesCategory('transport')">
+          <i class="fa-solid fa-bus"></i> Transportation
+        </button>
+        <button class="filter-pill" data-cat="sanitation" onclick="App.setServicesCategory('sanitation')">
+          <i class="fa-solid fa-restroom"></i> Toilets & Sanitation
+        </button>
+        <button class="filter-pill" data-cat="water" onclick="App.setServicesCategory('water')">
+          <i class="fa-solid fa-faucet-drip"></i> Drinking Water
+        </button>
+        <button class="filter-pill" data-cat="accommodation" onclick="App.setServicesCategory('accommodation')">
+          <i class="fa-solid fa-bed"></i> Accommodation
+        </button>
+        <button class="filter-pill" data-cat="helpdesk" onclick="App.setServicesCategory('helpdesk')">
+          <i class="fa-solid fa-shield"></i> Police & Helpdesk
+        </button>
+        <button class="filter-pill" data-cat="food_shopping" onclick="App.setServicesCategory('food_shopping')">
+          <i class="fa-solid fa-utensils"></i> Bhojanalaya & Mess
+        </button>
+      </div>
+
+      <!-- Secondary Filters: Radius & Area & Verification Status -->
+      <div class="secondary-filters-bar">
+        <!-- Radius Slider -->
+        <div class="radius-slider-box">
+          <div class="slider-label-row">
+            <span><i class="fa-solid fa-compass" style="color: var(--color-saffron);"></i> Radius from Ramkund:</span>
+            <span class="slider-value-badge" id="radius-val-display">30.0 KM</span>
+          </div>
+          <input type="range" id="services-radius-slider" class="range-slider" min="0.5" max="30" step="0.5" value="30" oninput="App.handleRadiusChange(this.value)">
+        </div>
+
+        <!-- Area Dropdown -->
+        <div>
+          <select id="services-area-select" class="filter-select" style="width: 100%;" onchange="App.handleAreaChange(this.value)">
+            <option value="all">All Areas in Nashik</option>
+            <option value="Panchavati">Panchavati & Ramkund</option>
+            <option value="Tapovan">Tapovan Sadhugram</option>
+            <option value="Old CBS">Old CBS & Bus Stand</option>
+            <option value="Nashik Road">Nashik Road (Railway Station)</option>
+            <option value="Trimbakeshwar">Trimbakeshwar</option>
+            <option value="Trambakeshwar Road">Trambakeshwar Road</option>
+            <option value="Gangapur Road">Gangapur Road</option>
+          </select>
+        </div>
+
+        <!-- Verification Filter -->
+        <div>
+          <select id="services-verif-select" class="filter-select" style="width: 100%;" onchange="App.handleVerificationChange(this.value)">
+            <option value="all">All Verification Statuses</option>
+            <option value="Official Source">Official Source Only</option>
+            <option value="Reviewed by Project Team">Reviewed by Project Team</option>
+            <option value="Provider Submitted">Provider Submitted</option>
+            <option value="Needs Review">Needs Review</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Status Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <span id="services-results-count" style="font-size: 0.82rem; font-weight: 700; color: var(--color-slate-500);">Loading services...</span>
+      <button class="btn-report-info" onclick="App.resetServicesFilters()">
+        <i class="fa-solid fa-arrow-rotate-left"></i> Reset Filters
+      </button>
+    </div>
+
+    <!-- Service Cards Grid Container -->
+    <div class="services-card-grid" id="services-cards-container">
+      <!-- Populated via JavaScript -->
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 3: EXPLORE NASHIK (TOURISM DISCOVERY & ITINERARY BUILDER)            -->
+  <!-- ========================================================================= -->
+  <main id="view-explore" class="view-container" role="main">
+    <div class="section-header">
+      <div>
+        <h2>Tourism Discovery & Itinerary Planner</h2>
+        <p>Discover historical monuments, Jyotirlinga shrines, and curated travel trails across Nashik.</p>
+      </div>
+    </div>
+
+    <!-- Interactive Itinerary Builder Panel -->
+    <section class="itinerary-builder-panel" aria-labelledby="heading-itinerary-builder">
+      <div class="itinerary-panel-header">
+        <h3 id="heading-itinerary-builder">
+          <i class="fa-solid fa-route" style="color: var(--color-saffron);"></i> Smart Itinerary Builder
+        </h3>
+        <p>Select your available time and travel interests to receive a structured suggested route calculated from verified attraction records.</p>
+      </div>
+
+      <div class="itinerary-form-row">
+        <!-- Duration Selector -->
+        <div class="duration-selector-group">
+          <h4>1. Available Time in Nashik:</h4>
+          <div class="duration-options-list">
+            <label class="radio-card-label">
+              <input type="radio" name="itinerary-duration" value="2_3_hours">
+              <span><strong>2–3 Hours:</strong> Express Ghat Tour</span>
+            </label>
+            <label class="radio-card-label">
+              <input type="radio" name="itinerary-duration" value="half_day" checked>
+              <span><strong>Half-Day (4–5 Hours):</strong> Heritage & Devotion</span>
+            </label>
+            <label class="radio-card-label">
+              <input type="radio" name="itinerary-duration" value="full_day">
+              <span><strong>Full-Day (7–8 Hours):</strong> Grand Nashik Trail</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Interests Selector -->
+        <div class="interests-selector-group">
+          <h4>2. Select Your Interests:</h4>
+          <div class="interests-checkboxes-grid">
+            <label class="checkbox-card-label">
+              <input type="checkbox" name="itinerary-interest" value="spiritual" checked>
+              <span><i class="fa-solid fa-om" style="color: var(--color-saffron);"></i> Temples & Sacred Shrines</span>
+            </label>
+            <label class="checkbox-card-label">
+              <input type="checkbox" name="itinerary-interest" value="historical" checked>
+              <span><i class="fa-solid fa-landmark" style="color: #4F46E5;"></i> History & Ancient Caves</span>
+            </label>
+            <label class="checkbox-card-label">
+              <input type="checkbox" name="itinerary-interest" value="nature">
+              <span><i class="fa-solid fa-mountain-sun" style="color: #059669;"></i> Nature & Waterfalls</span>
+            </label>
+            <label class="checkbox-card-label">
+              <input type="checkbox" name="itinerary-interest" value="food_shopping">
+              <span><i class="fa-solid fa-bowl-food" style="color: #D97706;"></i> Local Misal & Bazaar</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button class="btn-generate-itinerary" id="btn-run-itinerary" onclick="App.handleGenerateItinerary()">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Suggested Route
+        </button>
+      </div>
+
+      <!-- Generated Route Output Container -->
+      <div class="itinerary-output-box" id="itinerary-output-container">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Attractions Directory -->
+    <div style="margin-top: 2rem;">
+      <div class="section-header">
+        <div>
+          <h3>All Tourist & Cultural Attractions</h3>
+          <p>Detailed architectural notes, suggested visit durations, and verified sources.</p>
+        </div>
+      </div>
+
+      <!-- Category Pills for Attractions -->
+      <div class="pill-filter-scroll" id="attractions-category-pills">
+        <button class="filter-pill active" data-cat="all" onclick="App.setAttractionsCategory('all')">
+          <i class="fa-solid fa-border-all"></i> All Attractions
+        </button>
+        <button class="filter-pill" data-cat="spiritual" onclick="App.setAttractionsCategory('spiritual')">
+          <i class="fa-solid fa-om"></i> Religious & Spiritual
+        </button>
+        <button class="filter-pill" data-cat="historical" onclick="App.setAttractionsCategory('historical')">
+          <i class="fa-solid fa-landmark"></i> Historical & Caves
+        </button>
+        <button class="filter-pill" data-cat="nature" onclick="App.setAttractionsCategory('nature')">
+          <i class="fa-solid fa-mountain-sun"></i> Nature & Scenic
+        </button>
+        <button class="filter-pill" data-cat="food_shopping" onclick="App.setAttractionsCategory('food_shopping')">
+          <i class="fa-solid fa-utensils"></i> Food & Bazaars
+        </button>
+      </div>
+
+      <!-- Attractions Grid -->
+      <div class="featured-grid" id="explore-attractions-grid">
+        <!-- Populated via JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 4: LOCAL CONNECT (LOCAL OPPORTUNITY PLATFORM)                        -->
+  <!-- ========================================================================= -->
+  <main id="view-connect" class="view-container" role="main">
+    <div class="connect-header-card">
+      <h2>Local Connect — Nashik Community Directory</h2>
+      <p>
+        Connecting pilgrims and visitors directly with authorized local guides, electric shuttle operators, traditional metal crafters, and satvik family homestays.
+      </p>
+      <div class="connect-cta-row">
+        <button class="btn-primary-hero" onclick="App.toggleProviderRegistrationForm()">
+          <i class="fa-solid fa-plus-circle"></i> Register Your Service / Business
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Quality Disclaimer -->
+    <div class="connect-disclaimer-box" role="note">
+      <i class="fa-solid fa-circle-info" style="font-size: 1.1rem; flex-shrink: 0; margin-top: 1px;"></i>
+      <div>
+        <strong>Platform Transparency Notice:</strong> Tourist Assist connects visitors with local service providers and does not take commissions, guarantee commercial bookings, or warrant individual service quality. Always exercise standard consumer diligence.
+      </div>
+    </div>
+
+    <!-- Provider Registration Form (Collapsible) -->
+    <section class="registration-form-card" id="provider-registration-box" aria-labelledby="heading-register-provider">
+      <div class="modal-header">
+        <h3 id="heading-register-provider"><i class="fa-solid fa-id-card" style="color: var(--color-saffron);"></i> Register as a Local Service Provider</h3>
+        <button class="modal-close-btn" onclick="App.toggleProviderRegistrationForm()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--color-slate-600);">
+        Submit your business or individual service details. All submissions enter a <strong>Pending Review</strong> status and are checked by the Tourist Assist administrative team prior to being listed publicly.
+      </p>
+
+      <form id="provider-reg-form" onsubmit="App.handleProviderRegistration(event)" class="form-grid">
+        <div class="form-group">
+          <label for="reg-name">Your Full Name *</label>
+          <input type="text" id="reg-name" class="form-input" required placeholder="e.g. Pandurang Shinde">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-business">Business / Service Name *</label>
+          <input type="text" id="reg-business" class="form-input" required placeholder="e.g. Godavari Heritage Pilgrim Guide">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-category">Service Category *</label>
+          <select id="reg-category" class="form-select" required>
+            <option value="">Select category...</option>
+            <option value="guide">Local Pilgrim / Heritage Guide</option>
+            <option value="transport">Transportation (Auto / Taxi / E-Rickshaw)</option>
+            <option value="food">Local Food & Satvik Bhojanalaya</option>
+            <option value="handicraft">Handicrafts & Traditional Pooja Items</option>
+            <option value="accommodation">Accommodation / Pilgrim Homestay</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-area">Operating Area in Nashik *</label>
+          <input type="text" id="reg-area" class="form-input" required placeholder="e.g. Panchavati / Ramkund / CBS">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-phone">Contact Phone Number *</label>
+          <input type="tel" id="reg-phone" class="form-input" required placeholder="e.g. +91 98220 12345">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-whatsapp">WhatsApp Number (Optional)</label>
+          <input type="tel" id="reg-whatsapp" class="form-input" placeholder="e.g. +91 98220 12345">
+        </div>
+
+        <div class="form-group form-col-full">
+          <label for="reg-services">Services Offered & Specialization *</label>
+          <input type="text" id="reg-services" class="form-input" required placeholder="e.g. 2-hour walking tour of Panchavati temples, English and Marathi commentary">
+        </div>
+
+        <div class="form-group form-col-full">
+          <label for="reg-description">Detailed Description *</label>
+          <textarea id="reg-description" class="form-textarea" required placeholder="Describe your experience, credentials, fleet, or products..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-pricing">Pricing Notes (Optional)</label>
+          <input type="text" id="reg-pricing" class="form-input" placeholder="e.g. Fixed tariff ₹500 / family group">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-website">Website or Profile Link (Optional)</label>
+          <input type="url" id="reg-website" class="form-input" placeholder="https://...">
+        </div>
+
+        <div class="form-col-full" style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+          <button type="submit" class="btn-primary-hero" id="btn-submit-provider">
+            <i class="fa-solid fa-paper-plane"></i> Submit Registration
+          </button>
+          <button type="button" class="btn-secondary-hero" onclick="App.toggleProviderRegistrationForm()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Provider Listings -->
+    <div class="section-header">
+      <div>
+        <h3>Approved Local Providers</h3>
+        <p>Browse community members who have been verified by the Tourist Assist team.</p>
+      </div>
+      <div>
+        <!-- Category Filter -->
+        <select id="provider-category-filter" class="filter-select" onchange="App.handleProviderFilterChange(this.value)">
+          <option value="all">All Service Types</option>
+          <option value="guide">Local Guides</option>
+          <option value="transport">Transport Operators</option>
+          <option value="food">Satvik Dining</option>
+          <option value="handicraft">Handicrafts & Pooja</option>
+          <option value="accommodation">Homestays</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Provider Cards Grid -->
+    <div class="provider-cards-grid" id="approved-providers-grid">
+      <!-- Populated via JS -->
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 5: QR HUB & DYNAMIC DESTINATION VIEWER                               -->
+  <!-- ========================================================================= -->
+  <main id="view-qr" class="view-container" role="main">
+    <div class="qr-landing-wrapper">
+      <div class="qr-hub-card" id="qr-display-box">
+        <span class="qr-hub-badge" id="qr-view-badge">QR LOCATION HUB</span>
+        <h2 class="qr-hub-title" id="qr-view-title">Ramkund Main Ghat Promenade</h2>
+        <p class="qr-hub-location" id="qr-view-location"><i class="fa-solid fa-location-dot"></i> Panchavati, Nashik Ground Zero</p>
+        <p style="font-size: 0.88rem; color: var(--color-slate-700); margin-bottom: 1.5rem;" id="qr-view-desc">
+          You are viewing the on-ground assistance hub for this sector. Tap any action below for immediate direction or emergency help.
+        </p>
+
+        <!-- Immediate 1-Tap Actions -->
+        <div class="qr-quick-actions-row">
+          <a href="tel:108" class="qr-action-btn" style="background-color: #FEE2E2;">
+            <i class="fa-solid fa-phone-volume" style="color: #DC2626;"></i>
+            <span>Call 108</span>
+          </a>
+          <button class="qr-action-btn" onclick="App.filterServicesByCategory('water')">
+            <i class="fa-solid fa-faucet-drip" style="color: #0D9488;"></i>
+            <span>Drinking Water</span>
+          </button>
+          <button class="qr-action-btn" onclick="App.filterServicesByCategory('sanitation')">
+            <i class="fa-solid fa-restroom" style="color: #4F46E5;"></i>
+            <span>Nearest Toilet</span>
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+          <button class="btn-primary-hero" style="font-size: 0.85rem;" onclick="App.navigate('services')">
+            <i class="fa-solid fa-list-check"></i> View Full Directory
+          </button>
+          <button class="btn-secondary-hero" style="font-size: 0.85rem;" onclick="App.navigate('explore')">
+            <i class="fa-solid fa-compass"></i> Sights Nearby
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Emergency Facilities in Sector -->
+      <div class="section-header">
+        <div>
+          <h4>Nearest Sector Facilities</h4>
+          <p>Instant access points in this zone.</p>
+        </div>
+      </div>
+      <div class="services-card-grid" id="qr-nearby-services-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 6: INFORMATION VERIFICATION & ADMINISTRATION DASHBOARD                -->
+  <!-- ========================================================================= -->
+  <main id="view-admin" class="view-container" role="main">
+    
+    <!-- Login Form (If unauthenticated) -->
+    <div id="admin-login-section" class="registration-form-card active" style="max-width: 440px; margin: 3rem auto;">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div class="brand-icon" style="margin: 0 auto 0.75rem auto;">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--color-navy);">Tourist Assist Admin Login</h3>
+        <p style="font-size: 0.82rem; color: var(--color-slate-500);">Secure authentication required to review listings and generate QR codes.</p>
+      </div>
+
+      <form onsubmit="App.handleAdminLogin(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="admin-user-input">Username</label>
+          <input type="text" id="admin-user-input" class="form-input" required value="admin">
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="admin-pass-input">Password</label>
+          <input type="password" id="admin-pass-input" class="form-input" required value="admin123">
+        </div>
+        <button type="submit" class="btn-primary-hero" style="width: 100%; justify-content: center;" id="btn-submit-admin-login">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Dashboard
+        </button>
+      </form>
+    </div>
+
+    <!-- Authenticated Admin Dashboard Panel -->
+    <div id="admin-dashboard-section" style="display: none;">
+      <div class="admin-header-strip">
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--color-navy);">
+            Information Verification & Admin Control
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--color-slate-500);" id="admin-welcome-user">
+            Logged in as Administrator
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-secondary-hero" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;" onclick="App.handleAdminLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Tab Navigation -->
+      <div class="admin-nav-tabs">
+        <button class="admin-tab-btn active" id="tab-btn-admin-providers" onclick="App.setAdminTab('providers')">
+          <i class="fa-solid fa-user-check"></i> Provider Approvals <span id="admin-pending-badge" class="slider-value-badge" style="background:#FEE2E2; color:#DC2626;">0</span>
+        </button>
+        <button class="admin-tab-btn" id="tab-btn-admin-services" onclick="App.setAdminTab('services')">
+          <i class="fa-solid fa-hand-holding-heart"></i> Essential Services
+        </button>
+        <button class="admin-tab-btn" id="tab-btn-admin-attractions" onclick="App.setAdminTab('attractions')">
+          <i class="fa-solid fa-landmark"></i> Tourist Attractions
+        </button>
+        <button class="admin-tab-btn" id="tab-btn-admin-qr" onclick="App.setAdminTab('qr')">
+          <i class="fa-solid fa-qrcode"></i> Dynamic QR Generator
+        </button>
+        <button class="admin-tab-btn" id="tab-btn-admin-reports" onclick="App.setAdminTab('reports')">
+          <i class="fa-solid fa-triangle-exclamation"></i> Information Reports
+        </button>
+      </div>
+
+      <!-- Tab Content 1: Provider Approvals -->
+      <div id="admin-content-providers">
+        <div class="section-header">
+          <div>
+            <h4>Local Provider Moderation Queue</h4>
+            <p>Review submitted registration requests. Approved businesses become visible in the visitor directory.</p>
+          </div>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Business Name</th>
+                <th>Owner / Area</th>
+                <th>Category</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-providers-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Essential Services Management -->
+      <div id="admin-content-services" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h4>Essential Services Management</h4>
+            <p>Add, edit, or update verification statuses for healthcare, transit, toilets, and water stations.</p>
+          </div>
+          <button class="btn-primary-hero" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;" onclick="App.openServiceEditModal()">
+            <i class="fa-solid fa-plus"></i> Add New Service
+          </button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Category</th>
+                <th>Area / Dist</th>
+                <th>Status</th>
+                <th>Last Reviewed</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-services-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Tourist Attractions Management -->
+      <div id="admin-content-attractions" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h4>Tourist Attractions Management</h4>
+            <p>Manage Nashik spiritual and heritage points of interest.</p>
+          </div>
+          <button class="btn-primary-hero" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;" onclick="App.openAttractionEditModal()">
+            <i class="fa-solid fa-plus"></i> Add New Attraction
+          </button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Attraction Name</th>
+                <th>Category</th>
+                <th>Area / Dist</th>
+                <th>Suggested Duration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-attractions-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content 4: Dynamic QR Manager -->
+      <div id="admin-content-qr" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h4>Dynamic QR Code Generator & Destination Manager</h4>
+            <p>Generate high-resolution QR codes linked to dynamic destination URLs. Update destination targets without reprinting.</p>
+          </div>
+          <button class="btn-primary-hero" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;" onclick="App.openCreateQrModal()">
+            <i class="fa-solid fa-plus"></i> Generate New Dynamic QR
+          </button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title / Label</th>
+                <th>Location Landmark</th>
+                <th>Target URL Destination</th>
+                <th>Scans</th>
+                <th>Download QR</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-qrs-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content 5: Information Reports -->
+      <div id="admin-content-reports" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h4>Crowdsourced Verification Reports</h4>
+            <p>Pilgrim feedback submitted regarding outdated phone numbers, moved facilities, or incorrect pricing.</p>
+          </div>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Entity Name</th>
+                <th>Issue Type</th>
+                <th>Description</th>
+                <th>Reporter</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-reports-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODALS                                                                    -->
+  <!-- ========================================================================= -->
+
+  <!-- Modal 1: Send Provider Enquiry -->
+  <div class="modal-overlay" id="modal-provider-enquiry" role="dialog" aria-modal="true" aria-labelledby="modal-enquiry-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-enquiry-title">Send Direct Enquiry</h3>
+        <button class="modal-close-btn" onclick="App.closeModals()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--color-slate-600); margin-bottom: 1rem;" id="modal-enquiry-desc">
+        Connect with the local service provider.
+      </p>
+      <form id="enquiry-form" onsubmit="App.handleSendEnquiry(event)">
+        <input type="hidden" id="enquiry-provider-id">
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="enquiry-name">Your Name *</label>
+          <input type="text" id="enquiry-name" class="form-input" required placeholder="e.g. Ramesh Patil">
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="enquiry-phone">Your Phone / WhatsApp Number *</label>
+          <input type="tel" id="enquiry-phone" class="form-input" required placeholder="e.g. +91 98220 00000">
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="enquiry-date">Planned Date of Visit</label>
+          <input type="date" id="enquiry-date" class="form-input">
+        </div>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="enquiry-message">Requirements / Message *</label>
+          <textarea id="enquiry-message" class="form-textarea" required placeholder="Specify passenger count, tour duration, or queries..."></textarea>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="submit" class="btn-primary-hero" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-paper-plane"></i> Dispatch Enquiry
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Report Outdated / Incorrect Info -->
+  <div class="modal-overlay" id="modal-report-info" role="dialog" aria-modal="true" aria-labelledby="modal-report-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-report-title">Report Outdated or Incorrect Info</h3>
+        <button class="modal-close-btn" onclick="App.closeModals()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--color-slate-600); margin-bottom: 1rem;">
+        Help maintain accuracy for fellow pilgrims. Our team will verify and update this record.
+      </p>
+      <form id="report-form" onsubmit="App.handleReportSubmit(event)">
+        <input type="hidden" id="report-entity-id">
+        <input type="hidden" id="report-entity-type" value="service">
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="report-entity-name">Facility / Attraction Name *</label>
+          <input type="text" id="report-entity-name" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="report-issue-type">What is incorrect? *</label>
+          <select id="report-issue-type" class="form-select" required>
+            <option value="incorrect_contact">Incorrect or Disconnected Phone Number</option>
+            <option value="wrong_address">Wrong Address / Location</option>
+            <option value="closed_down">Facility Closed or Relocated</option>
+            <option value="misleading_pricing">Incorrect Rates or Pricing Info</option>
+            <option value="other">Other Correction</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="report-desc">Correct Details / Explanation *</label>
+          <textarea id="report-desc" class="form-textarea" required placeholder="Please provide the accurate details if known..."></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="report-contact">Your Contact (Optional, for verification)</label>
+          <input type="text" id="report-contact" class="form-input" placeholder="Phone or email">
+        </div>
+        <button type="submit" class="btn-primary-hero" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-check"></i> Submit Verification Report
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add/Edit Service Modal (Admin) -->
+  <div class="modal-overlay" id="modal-service-form" role="dialog" aria-modal="true" aria-labelledby="modal-service-form-title">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="modal-service-form-title">Essential Service Record</h3>
+        <button class="modal-close-btn" onclick="App.closeModals()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="service-admin-form" onsubmit="App.handleServiceSave(event)" class="form-grid">
+        <input type="hidden" id="admin-service-id">
+        <div class="form-group">
+          <label>Facility Name *</label>
+          <input type="text" id="as-name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="as-category" class="form-select" required>
+            <option value="medical">Medical Assistance</option>
+            <option value="transport">Transportation</option>
+            <option value="sanitation">Toilets & Sanitation</option>
+            <option value="water">Drinking Water</option>
+            <option value="accommodation">Accommodation</option>
+            <option value="helpdesk">Police & Helpdesk</option>
+            <option value="food_shopping">Bhojanalaya & Mess</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Sub-Category</label>
+          <input type="text" id="as-subcat" class="form-input" placeholder="e.g. Trauma ER, Bio-Toilet">
+        </div>
+        <div class="form-group">
+          <label>Area in Nashik *</label>
+          <input type="text" id="as-area" class="form-input" required placeholder="e.g. Panchavati">
+        </div>
+        <div class="form-group form-col-full">
+          <label>Full Address *</label>
+          <input type="text" id="as-address" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label>Distance from Ramkund (KM) *</label>
+          <input type="number" step="0.1" id="as-dist" class="form-input" required value="0.0">
+        </div>
+        <div class="form-group">
+          <label>Contact Phone</label>
+          <input type="text" id="as-phone" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Hours of Operation</label>
+          <input type="text" id="as-hours" class="form-input" value="24/7">
+        </div>
+        <div class="form-group">
+          <label>Rate Type</label>
+          <select id="as-ratetype" class="form-select">
+            <option value="free">Free</option>
+            <option value="budget">Budget</option>
+            <option value="moderate">Moderate</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+        <div class="form-group form-col-full">
+          <label>Rate Details</label>
+          <input type="text" id="as-rateinfo" class="form-input" placeholder="e.g. Free Govt Hospital or ₹150 Dorm">
+        </div>
+        <div class="form-group form-col-full">
+          <label>Google Maps Link</label>
+          <input type="url" id="as-maps" class="form-input" placeholder="https://maps.google.com/...">
+        </div>
+        <div class="form-group form-col-full">
+          <label>Description</label>
+          <textarea id="as-desc" class="form-textarea"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Verification Status *</label>
+          <select id="as-verif" class="form-select" required>
+            <option value="Official Source">Official Source</option>
+            <option value="Reviewed by Project Team">Reviewed by Project Team</option>
+            <option value="Provider Submitted">Provider Submitted</option>
+            <option value="Needs Review">Needs Review</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Source Reference URL or Document</label>
+          <input type="text" id="as-source" class="form-input" placeholder="e.g. NMC Health Portal">
+        </div>
+        <div class="form-group form-col-full">
+          <label><input type="checkbox" id="as-emergency"> Is Critical Emergency Service (Ambulance / ICU / Police)</label>
+        </div>
+        <div class="form-col-full" style="display: flex; gap: 0.5rem;">
+          <button type="submit" class="btn-primary-hero" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-save"></i> Save Service Record
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Create Dynamic QR Modal (Admin) -->
+  <div class="modal-overlay" id="modal-create-qr" role="dialog" aria-modal="true" aria-labelledby="modal-qr-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-qr-title">Generate Dynamic QR Code</h3>
+        <button class="modal-close-btn" onclick="App.closeModals()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="create-qr-form" onsubmit="App.handleCreateQr(event)">
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="qr-form-title">QR Title / Poster Label *</label>
+          <input type="text" id="qr-form-title" class="form-input" required placeholder="e.g. Ramkund Main Ghat Snan Hub">
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="qr-form-loc">Physical Location Landmark *</label>
+          <input type="text" id="qr-form-loc" class="form-input" required placeholder="e.g. Pillar 4, West Promenade, Ramkund">
+        </div>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="qr-form-type">Destination Type</label>
+          <select id="qr-form-type" class="form-select" onchange="App.handleQrTypeSwitch(this.value)">
+            <option value="area_hub">Area Assistance Landing Hub</option>
+            <option value="attraction">Specific Tourist Attraction</option>
+            <option value="service">Specific Emergency Facility</option>
+            <option value="custom">Custom Web URL</option>
+          </select>
+        </div>
+        <div class="form-group" id="qr-target-select-group" style="margin-bottom: 0.85rem;">
+          <label for="qr-form-target-id">Select Destination Target</label>
+          <select id="qr-form-target-id" class="form-select"></select>
+        </div>
+        <div class="form-group" id="qr-custom-url-group" style="display: none; margin-bottom: 0.85rem;">
+          <label for="qr-form-custom-url">Custom Destination URL</label>
+          <input type="text" id="qr-form-custom-url" class="form-input" placeholder="/services?area=Tapovan">
+        </div>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="qr-form-desc">Description Notes</label>
+          <textarea id="qr-form-desc" class="form-textarea" placeholder="Notes on physical installation placement..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary-hero" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-qrcode"></i> Generate Dynamic QR Code
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="app-toast" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-check" style="color: #4ADE80;"></i>
+    <span id="toast-message">Action completed successfully</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Tourist Assist</h3>
+          <p>
+            An independent, non-official pilgrim assistance, essential services directory, and sustainable tourism platform built for the Nashik Maha Kumbh Mela 2027 and the heritage city of Nashik.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="#home" onclick="App.navigate('home')">Home Overview</a></li>
+            <li><a href="#services" onclick="App.navigate('services')">Pilgrim Assistance</a></li>
+            <li><a href="#explore" onclick="App.navigate('explore')">Tourism & Itinerary Builder</a></li>
+            <li><a href="#connect" onclick="App.navigate('connect')">Local Provider Opportunities</a></li>
+            <li><a href="#qr" onclick="App.navigate('qr')">QR Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Emergency & Help</h4>
+          <ul class="footer-links-list">
+            <li><a href="tel:108"><i class="fa-solid fa-phone"></i> 108 — Medical Ambulance</a></li>
+            <li><a href="tel:112"><i class="fa-solid fa-phone"></i> 112 — National Police</a></li>
+            <li><a href="tel:1077"><i class="fa-solid fa-phone"></i> 1077 — NMC Disaster Control</a></li>
+            <li><a href="tel:18002330011"><i class="fa-solid fa-phone"></i> 1800-233-0011 (Toll-Free)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-strip">
+        <div>
+          &copy; 2026–2027 Tourist Assist. Open community platform for Nashik tourism.
+        </div>
+        <div>
+          Disclaimer: Information is sourced from public directories and community reviews. Not an official municipal portal.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/offline-store.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
